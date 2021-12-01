@@ -186,7 +186,7 @@ def browser(launch_browser: Callable[[], Browser]) -> Generator[Browser, None, N
     artifacts_folder.cleanup()
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def context(
     browser: Browser,
     browser_context_args: Dict,
@@ -218,22 +218,22 @@ def context(
         else:
             context.tracing.stop()
 
-    screenshot_option = pytestconfig.getoption("--screenshot")
-    capture_screenshot = screenshot_option == "on" or (
-        request.node.rep_call.failed and screenshot_option == "only-on-failure"
-    )
-    if capture_screenshot:
-        for index, page in enumerate(pages):
-            human_readable_status = (
-                "failed" if request.node.rep_call.failed else "finished"
-            )
-            screenshot_path = _build_artifact_test_folder(
-                pytestconfig, request, f"test-{human_readable_status}-{index+1}.png"
-            )
-            try:
-                page.screenshot(timeout=5000, path=screenshot_path)
-            except Error:
-                pass
+    # screenshot_option = pytestconfig.getoption("--screenshot")
+    # capture_screenshot = screenshot_option == "on" or (
+    #     request.node.rep_call.failed and screenshot_option == "only-on-failure"
+    # )
+    # if capture_screenshot:
+    #     for index, page in enumerate(pages):
+    #         human_readable_status = (
+    #             "failed" if request.node.rep_call.failed else "finished"
+    #         )
+    #         screenshot_path = _build_artifact_test_folder(
+    #             pytestconfig, request, f"test-{human_readable_status}-{index+1}.png"
+    #         )
+    #         try:
+    #             page.screenshot(timeout=5000, path=screenshot_path)
+    #         except Error:
+    #             pass
 
     context.close()
 
@@ -257,11 +257,15 @@ def context(
                 pass
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def page(context: BrowserContext, base_url: str) -> Generator[Page, None, None]:
     page = context.new_page()
     yield page
 
+@pytest.fixture(scope="session")
+def page1(context: BrowserContext, base_url: str) -> Generator[Page, None, None]:
+    page1 = context.new_page()
+    yield page1
 
 @pytest.fixture(scope="session")
 def is_webkit(browser_name: str) -> bool:

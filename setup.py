@@ -6,6 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setuptools.setup(
     name="pytest-playwright",
     author="liuxiankun",
+    version="0.0.1",
     author_email="939449414@qq.com",
     description="A pytest wrapper with fixtures for Playwright to automate web browsers",
     long_description=long_description,
@@ -25,6 +26,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
         "Framework :: Pytest",
